@@ -63,7 +63,7 @@ const FormControls = ({ formControls, formData, setFormData }) => {
     <div className="flex flex-col gap-3">
       {formControls && formControls.length > 0
         ? formControls.map((formControl) => (
-            <div className="">
+            <div className="space-y-2">
               <Label>{formControl.label}</Label>
               {handleFormControl(formControl)}
             </div>

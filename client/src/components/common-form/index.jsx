@@ -17,7 +17,7 @@ const CommonForm = ({
         formData={formData}
         setFormData={setFormData}
       />
-      <Button type="submit" className="mt-4 w-full">
+      <Button type="submit" className="mt-8 w-full">
         {buttonText || "Submit"}
       </Button>
     </form>
