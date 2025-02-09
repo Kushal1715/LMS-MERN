@@ -13,6 +13,7 @@ import { Textarea } from "../ui/textarea";
 const FormControls = ({ formControls, formData, setFormData }) => {
   const handleFormControl = (currentFormControl) => {
     let element = null;
+    const value = formData[currentFormControl.name] || "";
 
     switch (currentFormControl.componentType) {
       case "input":
@@ -22,12 +23,27 @@ const FormControls = ({ formControls, formData, setFormData }) => {
             name={currentFormControl.name}
             placeholder={currentFormControl.placeholder}
             type={currentFormControl.type}
+            value={value}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                [currentFormControl.name]: e.target.value,
+              })
+            }
           />
         );
         break;
       case "select":
         element = (
-          <Select>
+          <Select
+            onValueChange={(value) =>
+              setFormData({
+                ...formData,
+                [currentFormControl.name]: value,
+              })
+            }
+            value={value}
+          >
             <SelectTrigger>
               <SelectValue placeholder={currentFormControl.label} />
             </SelectTrigger>
@@ -50,6 +66,13 @@ const FormControls = ({ formControls, formData, setFormData }) => {
             id={currentFormControl.name}
             name={currentFormControl.name}
             placeholder={currentFormControl.placeholder}
+            value={value}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                [currentFormControl.name]: e.target.value,
+              })
+            }
           />
         );
         break;
@@ -63,7 +86,7 @@ const FormControls = ({ formControls, formData, setFormData }) => {
     <div className="flex flex-col gap-3">
       {formControls && formControls.length > 0
         ? formControls.map((formControl) => (
-            <div className="space-y-2">
+            <div className="space-y-2" key={formControl.name}>
               <Label>{formControl.label}</Label>
               {handleFormControl(formControl)}
             </div>

@@ -8,11 +8,39 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config";
+import { AuthContext } from "@/context/auth-context";
 import { GraduationCap } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 const AuthPage = () => {
+  const {
+    signInFormData,
+    setSignInFormData,
+    signUpFormData,
+    setSignUpFormData,
+  } = useContext(AuthContext);
+
+  const validateSignInForm = () => {
+    return (
+      signInFormData &&
+      signInFormData.email !== "" &&
+      signInFormData.password !== ""
+    );
+  };
+
+  const validateSignUpForm = () => {
+    return (
+      signUpFormData &&
+      signUpFormData.userName !== "" &&
+      signUpFormData.email !== "" &&
+      signUpFormData.password !== ""
+    );
+  };
+
+  console.log(signInFormData, "signin");
+  console.log(signUpFormData, "signup");
+
   return (
     <div className="max-h-screen p-6">
       <header>
@@ -39,7 +67,13 @@ const AuthPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <CommonForm formControls={signInFormControls} />
+                <CommonForm
+                  formControls={signInFormControls}
+                  buttonText="Sign In"
+                  formData={signInFormData}
+                  setFormData={setSignInFormData}
+                  isButtonDisable={!validateSignInForm()}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -52,7 +86,13 @@ const AuthPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <CommonForm formControls={signUpFormControls} />
+                <CommonForm
+                  formControls={signUpFormControls}
+                  buttonText={"Sign Up"}
+                  formData={signUpFormData}
+                  setFormData={setSignUpFormData}
+                  isButtonDisable={!validateSignUpForm()}
+                />
               </CardContent>
             </Card>
           </TabsContent>
