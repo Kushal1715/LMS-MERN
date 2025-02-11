@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 
 const registerUser = async (req, res) => {
   try {
-    console.log(req.body);
     const { userName, email, password, role } = req.body;
 
     const existingUser = await User.findOne({ $or: [{ userName }, { email }] });
