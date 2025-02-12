@@ -20,6 +20,7 @@ const AuthPage = () => {
     signUpFormData,
     setSignUpFormData,
     registerUser,
+    loginUser,
   } = useContext(AuthContext);
 
   const validateSignInForm = () => {
@@ -38,9 +39,6 @@ const AuthPage = () => {
       signUpFormData.password !== ""
     );
   };
-
-  console.log(signInFormData, "signin");
-  console.log(signUpFormData, "signup");
 
   return (
     <div className="max-h-screen p-6">
@@ -74,6 +72,7 @@ const AuthPage = () => {
                   formData={signInFormData}
                   setFormData={setSignInFormData}
                   isButtonDisable={!validateSignInForm()}
+                  handleSubmit={loginUser}
                 />
               </CardContent>
             </Card>
