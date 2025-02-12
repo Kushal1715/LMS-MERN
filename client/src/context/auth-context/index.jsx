@@ -69,6 +69,7 @@ const AuthProvider = ({ children }) => {
         setSignUpFormData,
         registerUser,
         loginUser,
+        auth,
       }}
     >
       {children}
