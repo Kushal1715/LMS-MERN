@@ -1,6 +1,7 @@
 import { signInInitialValue, signUpInitialValue } from "@/config";
-import { loginService, registerService } from "@/services";
-import { createContext, useState } from "react";
+import { checkAuthService, loginService, registerService } from "@/services";
+import { isAxiosError } from "axios";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext(null);
 
@@ -19,10 +20,45 @@ const AuthProvider = ({ children }) => {
 
   const loginUser = async (e) => {
     e.preventDefault();
-    console.log(signInFormData);
     const data = await loginService(signInFormData);
-    console.log(data);
+    if (data?.success) {
+      sessionStorage.setItem(
+        "accessToken",
+        JSON.stringify(data?.data?.accessToken)
+      );
+      setAuth({
+        isAuthenticated: true,
+        user: data?.data?.user,
+      });
+    } else {
+      setAuth({
+        isAuthenticated: false,
+        user: null,
+      });
+    }
   };
+
+  const checkAuth = async () => {
+    const data = await checkAuthService();
+    console.log(data);
+    if (data?.success) {
+      setAuth({
+        isAuthenticated: true,
+        user: data?.data?.user,
+      });
+    } else {
+      setAuth({
+        isAuthenticated: false,
+        user: null,
+      });
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  console.log(auth);
 
   return (
     <AuthContext.Provider
