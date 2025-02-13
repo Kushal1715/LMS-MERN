@@ -10,13 +10,17 @@ import {
 } from "@/components/ui/table";
 import { Delete, Edit } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const InstructorCourses = () => {
+  const navigate = useNavigate();
   return (
     <Card>
       <CardHeader className="flex items-center justify-between flex-row">
         <CardTitle className="text-3xl font-bold">All Courses</CardTitle>
-        <Button>Add New Course</Button>
+        <Button onClick={() => navigate("/instructor/add-new-course")}>
+          Add New Course
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
