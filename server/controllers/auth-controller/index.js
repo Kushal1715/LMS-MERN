@@ -41,12 +41,8 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    console.log(req.body.email);
     const { email, password } = req.body;
-    console.log(email);
     const checkUser = await User.findOne({ email });
-    console.log(email);
-    console.log(checkUser);
 
     if (!checkUser) {
       return res.status(404).json({

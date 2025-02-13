@@ -2,7 +2,6 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 const RouteGuard = ({ isAuthenticated, user, element }) => {
-  console.log(isAuthenticated, user);
   const location = useLocation();
 
   if (!isAuthenticated && !location.pathname.includes("/auth")) {

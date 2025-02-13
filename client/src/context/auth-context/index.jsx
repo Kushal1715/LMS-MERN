@@ -43,7 +43,6 @@ const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const data = await checkAuthService();
-      console.log(data);
       if (data?.success) {
         setAuth({
           isAuthenticated: true,
@@ -58,7 +57,6 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     } catch (e) {
-      console.log(e);
       if (!e?.response?.data?.success) {
         setAuth({
           isAuthenticated: false,
@@ -72,8 +70,6 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     checkAuth();
   }, []);
-
-  console.log(auth);
 
   return (
     <AuthContext.Provider
