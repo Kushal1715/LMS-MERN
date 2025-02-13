@@ -50,13 +50,13 @@ const InstructorDashboardPage = () => {
               }
               variant={menuItem.value === currentTab ? "secondary" : "ghost"}
             >
-              <menuItem.icon />
+              <menuItem.icon className="h-11 w-11" />
               {menuItem.label}
             </Button>
           ))}
         </nav>
       </aside>
-      <main className="p-6 flex-1">
+      <main className="p-8 flex-1">
         <h1 className="font-extrabold text-4xl mb-6">Dashboard</h1>
         <div>
           <Tabs value={currentTab} onValueChange={setCurrentTab}>
