@@ -3,7 +3,7 @@ import AuthPage from "./pages/auth";
 import RouteGuard from "./components/route-guard";
 import { useContext } from "react";
 import { AuthContext } from "./context/auth-context";
-import InstructorDashboard from "./pages/instructor";
+import InstructorDashboardPage from "./pages/instructor";
 import CommonLayout from "./components/student-view/common-layout";
 import StudentHomePage from "./pages/Student/Home";
 import NotFound from "./pages/not-found";
@@ -25,7 +25,7 @@ function App() {
         path="/instructor"
         element={
           <RouteGuard
-            element={<InstructorDashboard />}
+            element={<InstructorDashboardPage />}
             isAuthenticated={auth.isAuthenticated}
             user={auth?.user}
           />
