@@ -40,6 +40,13 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const resetCredentials = () => {
+    setAuth({
+      isAuthenticated: false,
+      user: null,
+    });
+  };
+
   const checkAuth = async () => {
     try {
       const data = await checkAuthService();
@@ -81,6 +88,7 @@ const AuthProvider = ({ children }) => {
         registerUser,
         loginUser,
         auth,
+        resetCredentials,
       }}
     >
       {loading ? <Skeleton /> : children}

@@ -2,11 +2,13 @@ import InstructorCourses from "@/components/instructor-view/courses";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { AuthContext } from "@/context/auth-context";
 import { BarChart, Book, LogOut } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 const InstructorDashboardPage = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
+  const { resetCredentials } = useContext(AuthContext);
   const menuItems = [
     {
       icon: BarChart,
@@ -28,7 +30,10 @@ const InstructorDashboardPage = () => {
     },
   ];
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    resetCredentials();
+    sessionStorage.clear();
+  };
   return (
     <div className="h-screen w-full bg-gray-200 flex">
       <aside className="h-full bg-gray-50 px-4 py-6 w-96 hidden xl:block shadow-lg">
@@ -36,6 +41,7 @@ const InstructorDashboardPage = () => {
         <nav>
           {menuItems.map((menuItem) => (
             <Button
+              key={menuItem.value}
               className="w-full flex items-center justify-start mb-4 text-xl"
               onClick={
                 menuItem.component === null
@@ -55,7 +61,7 @@ const InstructorDashboardPage = () => {
         <div>
           <Tabs value={currentTab} onValueChange={setCurrentTab}>
             {menuItems.map((menuItem) => (
-              <TabsContent value={menuItem.value}>
+              <TabsContent value={menuItem.value} key={menuItem.value}>
                 {menuItem.component === null ? null : menuItem.component}
               </TabsContent>
             ))}
