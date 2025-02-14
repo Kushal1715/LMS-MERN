@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 
 export const InstructorContext = createContext(null);
 
-export default InstuctorProvider = ({ children }) => {
+const InstuctorProvider = ({ children }) => {
   const [courseLandingFormData, setCourseLandingFormData] = useState(
     courseLandingInitialFormData
   );
@@ -15,3 +15,5 @@ export default InstuctorProvider = ({ children }) => {
     </InstructorContext.Provider>
   );
 };
+
+export default InstuctorProvider;
