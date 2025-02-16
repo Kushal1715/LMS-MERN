@@ -5,11 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
+import { uploadMedia } from "@/services";
 import React, { useContext } from "react";
 
 const CourseCurriculum = () => {
-  const { courseCurriculumFormData, setCourseCurriculumFormData } =
-    useContext(InstructorContext);
+  const {
+    courseCurriculumFormData,
+    setCourseCurriculumFormData,
+    mediaUploadProgress,
+    setMediaUploadProgress,
+  } = useContext(InstructorContext);
 
   const handleAddLecture = () => {
     setCourseCurriculumFormData([
@@ -44,6 +49,23 @@ const CourseCurriculum = () => {
     if (selectedFile) {
       const videoFormData = new FormData();
       videoFormData.append("file", selectedFile);
+      try {
+        setMediaUploadProgress(true);
+        const response = await uploadMedia(videoFormData);
+        console.log(response);
+        if (response?.success) {
+          let copyCourseCurriculumFormData = [...courseCurriculumFormData];
+          copyCourseCurriculumFormData[currentIndex] = {
+            ...copyCourseCurriculumFormData[currentIndex],
+            videoUrl: response?.data?.url,
+            public_id: response?.data?.public_id,
+          };
+          setCourseCurriculumFormData(copyCourseCurriculumFormData);
+          setMediaUploadProgress(false);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
