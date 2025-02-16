@@ -37,6 +37,16 @@ const CourseCurriculum = () => {
     setCourseCurriculumFormData(copyCourseCurriculumFormData);
   };
 
+  const handleSingleLectureUpload = async (event, currentIndex) => {
+    console.log(event.target.files);
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      const videoFormData = new FormData();
+      videoFormData.append("file", selectedFile);
+    }
+  };
+
   console.log(courseCurriculumFormData);
   return (
     <Card>
@@ -75,8 +85,11 @@ const CourseCurriculum = () => {
                 <div className="mt-6">
                   <Input
                     type="file"
-                    accept="/video*"
+                    accept="video/*"
                     className="cursor-pointer"
+                    onChange={(event) =>
+                      handleSingleLectureUpload(event, index)
+                    }
                   />
                 </div>
               </CardContent>
