@@ -17,6 +17,27 @@ const CourseCurriculum = () => {
       { ...courseCurriculumInitialFormData[0] },
     ]);
   };
+
+  const handleTitleChange = (event, currentIndex) => {
+    let copyCourseCurriculumFormData = [...courseCurriculumFormData];
+    copyCourseCurriculumFormData[currentIndex] = {
+      ...copyCourseCurriculumFormData[currentIndex],
+      title: event.target.value,
+    };
+
+    setCourseCurriculumFormData(copyCourseCurriculumFormData);
+  };
+
+  const handleSwitch = (value, currentIndex) => {
+    let copyCourseCurriculumFormData = [...courseCurriculumFormData];
+    copyCourseCurriculumFormData[currentIndex] = {
+      ...copyCourseCurriculumFormData[currentIndex],
+      freePreview: value,
+    };
+    setCourseCurriculumFormData(copyCourseCurriculumFormData);
+  };
+
+  console.log(courseCurriculumFormData);
   return (
     <Card>
       <CardHeader>
@@ -38,10 +59,16 @@ const CourseCurriculum = () => {
                       placeholder={`Enter lecture ${index + 1} title`}
                       name={`lecture ${index + 1}`}
                       className="max-w-80 lg:w-80"
+                      onChange={(event) => handleTitleChange(event, index)}
+                      value={courseCurriculumFormData[index]?.title}
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Switch id={`lecture ${index + 1}`} />
+                    <Switch
+                      id={`lecture ${index + 1}`}
+                      onCheckedChange={(value) => handleSwitch(value, index)}
+                      checked={courseCurriculumFormData[index]?.freePreview}
+                    />
                     <Label htmlFor={`lecture ${index + 1}`}>Free Preview</Label>
                   </div>
                 </div>
