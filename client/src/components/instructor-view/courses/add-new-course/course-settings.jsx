@@ -1,3 +1,4 @@
+import MediaProgressbar from "@/components/media-progress-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,10 @@ const CourseSettings = () => {
   const {
     courseLandingFormData,
     setCourseLandingFormData,
+    mediaUploadProgress,
     setMediaUploadProgress,
+    mediaUploadProgressPrecentage,
+    setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
   const handleImageUploadChange = async (event) => {
     const selectedImage = event.target.files[0];
@@ -20,7 +24,10 @@ const CourseSettings = () => {
 
       try {
         setMediaUploadProgress(true);
-        const response = await uploadMedia(imageFormData);
+        const response = await uploadMedia(
+          imageFormData,
+          setMediaUploadProgressPercentage
+        );
         console.log(response);
         if (response?.success) {
           setCourseLandingFormData({
@@ -47,6 +54,12 @@ const CourseSettings = () => {
         ) : (
           <div>
             <Label>Upload Course Image</Label>
+            {mediaUploadProgress ? (
+              <MediaProgressbar
+                isMediaUploading={mediaUploadProgress}
+                progress={mediaUploadProgressPrecentage}
+              />
+            ) : null}
             <Input
               type="file"
               accept="image/*"
