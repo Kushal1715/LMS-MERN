@@ -14,6 +14,8 @@ const CourseCurriculum = () => {
     setCourseCurriculumFormData,
     mediaUploadProgress,
     setMediaUploadProgress,
+    mediaUploadProgressPrecentage,
+    setMediaUploadProgressPercentage,
   } = useContext(InstructorContext);
 
   const handleAddLecture = () => {
