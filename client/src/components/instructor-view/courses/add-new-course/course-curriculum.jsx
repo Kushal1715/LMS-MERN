@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import VideoPlayer from "@/components/video-player";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
 import { uploadMedia } from "@/services";
@@ -74,6 +75,8 @@ const CourseCurriculum = () => {
     }
   };
 
+  console.log(courseCurriculumFormData);
+
   return (
     <Card>
       <CardHeader>
@@ -115,14 +118,26 @@ const CourseCurriculum = () => {
                   </div>
                 </div>
                 <div className="mt-6">
-                  <Input
-                    type="file"
-                    accept="video/*"
-                    className="cursor-pointer"
-                    onChange={(event) =>
-                      handleSingleLectureUpload(event, index)
-                    }
-                  />
+                  {courseCurriculumFormData[index]?.videoUrl ? (
+                    <div className="flex gap-3">
+                      <VideoPlayer
+                        url={courseCurriculumFormData[index]?.videoUrl}
+                      />
+                      <Button>Replace Video</Button>
+                      <Button className="bg-red-600 hover:bg-red-600">
+                        Delete Lecture
+                      </Button>
+                    </div>
+                  ) : (
+                    <Input
+                      type="file"
+                      accept="video/*"
+                      className="cursor-pointer"
+                      onChange={(event) =>
+                        handleSingleLectureUpload(event, index)
+                      }
+                    />
+                  )}
                 </div>
               </CardContent>
             </Card>
