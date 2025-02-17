@@ -69,7 +69,6 @@ const CourseCurriculum = () => {
     }
   };
 
-  console.log(courseCurriculumFormData);
   return (
     <Card>
       <CardHeader>

@@ -1,19 +1,60 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React from "react";
+import { InstructorContext } from "@/context/instructor-context";
+import { uploadMedia } from "@/services";
+import React, { useContext } from "react";
 
 const CourseSettings = () => {
+  const {
+    courseLandingFormData,
+    setCourseLandingFormData,
+    setMediaUploadProgress,
+  } = useContext(InstructorContext);
+  const handleImageUploadChange = async (event) => {
+    const selectedImage = event.target.files[0];
+
+    if (selectedImage) {
+      const imageFormData = new FormData();
+      imageFormData.append("file", selectedImage);
+
+      try {
+        setMediaUploadProgress(true);
+        const response = await uploadMedia(imageFormData);
+        console.log(response);
+        if (response?.success) {
+          setCourseLandingFormData({
+            ...courseLandingFormData,
+            image: response?.data?.url,
+          });
+          setMediaUploadProgress(false);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  console.log(courseLandingFormData);
   return (
     <Card>
       <CardHeader>
         <CardTitle>Course Settings</CardTitle>
       </CardHeader>
       <CardContent>
-        <div>
-          <Label>Upload Course Image</Label>
-          <Input type="file" accept="image/*" className="mt-4 cursor-pointer" />
-        </div>
+        {courseLandingFormData.image !== "" ? (
+          <img src={courseLandingFormData?.image} />
+        ) : (
+          <div>
+            <Label>Upload Course Image</Label>
+            <Input
+              type="file"
+              accept="image/*"
+              className="mt-4 cursor-pointer"
+              onChange={handleImageUploadChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
