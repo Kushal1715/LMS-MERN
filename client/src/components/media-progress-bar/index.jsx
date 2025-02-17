@@ -21,7 +21,7 @@ function MediaProgressbar({ isMediaUploading, progress }) {
   if (!showProgress) return null;
 
   return (
-    <div className="w-full bg-gray-200 rounded-full h-3 mt-5 mb-5 relative overflow-hidden">
+    <div className="w-full bg-gray-400 rounded-full h-3 mt-5 mb-5 relative overflow-hidden">
       <motion.div
         className="bg-blue-600 h-3 rounded-full"
         initial={{ width: 0 }}

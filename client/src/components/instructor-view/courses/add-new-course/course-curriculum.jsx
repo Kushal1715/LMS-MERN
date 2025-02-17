@@ -1,3 +1,4 @@
+import MediaProgressbar from "@/components/media-progress-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -45,7 +46,6 @@ const CourseCurriculum = () => {
   };
 
   const handleSingleLectureUpload = async (event, currentIndex) => {
-    console.log(event.target.files);
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
@@ -53,7 +53,10 @@ const CourseCurriculum = () => {
       videoFormData.append("file", selectedFile);
       try {
         setMediaUploadProgress(true);
-        const response = await uploadMedia(videoFormData);
+        const response = await uploadMedia(
+          videoFormData,
+          setMediaUploadProgressPercentage
+        );
         console.log(response);
         if (response?.success) {
           let copyCourseCurriculumFormData = [...courseCurriculumFormData];
@@ -78,6 +81,12 @@ const CourseCurriculum = () => {
       </CardHeader>
       <CardContent>
         <Button onClick={handleAddLecture}>Add Lecture</Button>
+        {mediaUploadProgress ? (
+          <MediaProgressbar
+            isMediaUploading={mediaUploadProgress}
+            progress={mediaUploadProgressPrecentage}
+          />
+        ) : null}
         <div className="mt-4 space-y-4">
           {courseCurriculumFormData.map((formData, index) => (
             <Card className="p-6" key={index}>
