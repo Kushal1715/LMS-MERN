@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import VideoPlayer from "@/components/video-player";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
-import { uploadMedia } from "@/services";
+import { deleteMedia, uploadMedia } from "@/services";
 import React, { useContext } from "react";
 
 const CourseCurriculum = () => {
@@ -86,6 +86,25 @@ const CourseCurriculum = () => {
     });
   };
 
+  const handleDeleteLecture = async (currentIndex) => {
+    try {
+      const copyCourseCurriculumFormData = [...courseCurriculumFormData];
+      const publicId = copyCourseCurriculumFormData[currentIndex]?.public_id;
+      const response = await deleteMedia(publicId);
+      console.log(response);
+      if (response?.success) {
+        copyCourseCurriculumFormData[currentIndex] = {
+          ...copyCourseCurriculumFormData[currentIndex],
+          videoUrl: "",
+          public_id: "",
+        };
+        setCourseCurriculumFormData(copyCourseCurriculumFormData);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   console.log(courseCurriculumFormData);
 
   return (
@@ -137,7 +156,10 @@ const CourseCurriculum = () => {
                         url={courseCurriculumFormData[index]?.videoUrl}
                       />
                       <Button>Replace Video</Button>
-                      <Button className="bg-red-600 hover:bg-red-600">
+                      <Button
+                        className="bg-red-600 hover:bg-red-600"
+                        onClick={() => handleDeleteLecture(index)}
+                      >
                         Delete Lecture
                       </Button>
                     </div>
