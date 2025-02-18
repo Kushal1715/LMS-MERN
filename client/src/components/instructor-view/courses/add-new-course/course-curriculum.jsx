@@ -155,7 +155,9 @@ const CourseCurriculum = () => {
                       <VideoPlayer
                         url={courseCurriculumFormData[index]?.videoUrl}
                       />
-                      <Button>Replace Video</Button>
+                      <Button onClick={() => handleDeleteLecture(index)}>
+                        Replace Video
+                      </Button>
                       <Button
                         className="bg-red-600 hover:bg-red-600"
                         onClick={() => handleDeleteLecture(index)}
