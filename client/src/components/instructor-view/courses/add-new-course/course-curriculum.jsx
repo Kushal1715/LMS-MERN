@@ -75,6 +75,17 @@ const CourseCurriculum = () => {
     }
   };
 
+  const handleAddLectureButton = () => {
+    return courseCurriculumFormData.every((item) => {
+      return (
+        item &&
+        typeof item === "object" &&
+        item.title.trim() !== "" &&
+        item.videoUrl.trim() !== ""
+      );
+    });
+  };
+
   console.log(courseCurriculumFormData);
 
   return (
@@ -83,7 +94,9 @@ const CourseCurriculum = () => {
         <CardTitle>Create Course Curriculum</CardTitle>
       </CardHeader>
       <CardContent>
-        <Button onClick={handleAddLecture}>Add Lecture</Button>
+        <Button onClick={handleAddLecture} disabled={!handleAddLectureButton()}>
+          Add Lecture
+        </Button>
         {mediaUploadProgress ? (
           <MediaProgressbar
             isMediaUploading={mediaUploadProgress}
