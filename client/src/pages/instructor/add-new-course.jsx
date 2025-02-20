@@ -44,11 +44,43 @@ const AddNewCourse = () => {
 
     return hasFreePreview;
   }
+
+  const handleCourseSubmit = async () => {
+    const allFormData = {
+      instructorId: String,
+      instructorName: String,
+      date: Date,
+      title: String,
+      category: String,
+      level: String,
+      primaryLanguage: String,
+      subtitle: String,
+      description: String,
+      image: String,
+      welcomeMessage: String,
+      pricing: String,
+      objectives: String,
+      students: [
+        {
+          studentId: String,
+          studentName: String,
+          studentEmail: String,
+          paidAmount: String,
+        },
+      ],
+      curriculum: [LectureSchema],
+      isPublished: Boolean,
+    };
+  };
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="font-extrabold text-3xl">Create New Course</h1>
-        <Button className="text-lg px-6" disabled={!validateFormData()}>
+        <Button
+          className="text-lg px-6"
+          disabled={!validateFormData()}
+          onClick={handleCourseSubmit}
+        >
           Submit
         </Button>
       </div>
