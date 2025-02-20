@@ -1,4 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
+import axios from "axios";
 
 export const registerService = async (formData) => {
   const { data } = await axiosInstance.post("/auth/register", {
@@ -34,5 +35,30 @@ export const uploadMedia = async (formData, onProgressCallback) => {
 
 export const deleteMedia = async (id) => {
   const { data } = await axiosInstance.delete(`/media/delete/${id}`);
+  return data;
+};
+
+export const addCourseService = async (formData) => {
+  const { data } = await axiosInstance.post("/instructor/course/add", formData);
+  return data;
+};
+
+export const getAllCourseService = async () => {
+  const { data } = await axiosInstance.get("/instructor/course/get");
+  return data;
+};
+
+export const getCourseDetailsService = async (id) => {
+  const { data } = await axiosInstance.get(
+    `/instructor/course/get-course-details/${id}`
+  );
+  return data;
+};
+
+export const updateCourseService = async (id, formData) => {
+  const { data } = await axiosInstance.put(
+    `/instructor/course/update/${id}`,
+    formData
+  );
   return data;
 };
