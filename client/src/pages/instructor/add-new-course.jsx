@@ -4,14 +4,25 @@ import CourseSettings from "@/components/instructor-view/courses/add-new-course/
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  courseCurriculumInitialFormData,
+  courseLandingInitialFormData,
+} from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
+import { useToast } from "@/hooks/use-toast";
+import { addCourseService } from "@/services";
 import React, { useContext } from "react";
 
 const AddNewCourse = () => {
-  const { courseLandingFormData, courseCurriculumFormData } =
-    useContext(InstructorContext);
+  const {
+    courseLandingFormData,
+    courseCurriculumFormData,
+    setCourseLandingFormData,
+    setCourseCurriculumFormData,
+  } = useContext(InstructorContext);
   const { auth } = useContext(AuthContext);
+  const { toast } = useToast();
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
@@ -58,18 +69,22 @@ const AddNewCourse = () => {
       isPublished: true,
     };
 
-    console.log(allFormData);
+    const response = await addCourseService(allFormData);
+    console.log(response);
+    if (response?.success) {
+      setCourseCurriculumFormData(courseCurriculumInitialFormData);
+      setCourseLandingFormData(courseLandingInitialFormData);
+      toast({
+        title: response?.message,
+      });
+    }
   };
 
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="font-extrabold text-3xl">Create New Course</h1>
-        <Button
-          className="text-lg px-6"
-          disabled={!validateFormData()}
-          onClick={handleCourseSubmit}
-        >
+        <Button className="text-lg px-6" onClick={handleCourseSubmit}>
           Submit
         </Button>
       </div>
