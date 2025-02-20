@@ -4,12 +4,14 @@ import CourseSettings from "@/components/instructor-view/courses/add-new-course/
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
 import React, { useContext } from "react";
 
 const AddNewCourse = () => {
   const { courseLandingFormData, courseCurriculumFormData } =
     useContext(InstructorContext);
+  const { auth } = useContext(AuthContext);
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
@@ -47,31 +49,18 @@ const AddNewCourse = () => {
 
   const handleCourseSubmit = async () => {
     const allFormData = {
-      instructorId: String,
-      instructorName: String,
-      date: Date,
-      title: String,
-      category: String,
-      level: String,
-      primaryLanguage: String,
-      subtitle: String,
-      description: String,
-      image: String,
-      welcomeMessage: String,
-      pricing: String,
-      objectives: String,
-      students: [
-        {
-          studentId: String,
-          studentName: String,
-          studentEmail: String,
-          paidAmount: String,
-        },
-      ],
-      curriculum: [LectureSchema],
-      isPublished: Boolean,
+      instructorId: auth?.user?._id,
+      instructorName: auth?.user?.userName,
+      date: new Date(),
+      ...courseLandingFormData,
+      students: [],
+      curriculum: courseCurriculumFormData,
+      isPublished: true,
     };
+
+    console.log(allFormData);
   };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
