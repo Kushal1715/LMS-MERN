@@ -13,6 +13,7 @@ import { InstructorContext } from "@/context/instructor-context";
 import { useToast } from "@/hooks/use-toast";
 import { addCourseService } from "@/services";
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddNewCourse = () => {
   const {
@@ -23,6 +24,7 @@ const AddNewCourse = () => {
   } = useContext(InstructorContext);
   const { auth } = useContext(AuthContext);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
@@ -77,6 +79,7 @@ const AddNewCourse = () => {
       toast({
         title: response?.message,
       });
+      navigate(-1);
     }
   };
 
@@ -84,7 +87,11 @@ const AddNewCourse = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="font-extrabold text-3xl">Create New Course</h1>
-        <Button className="text-lg px-6" onClick={handleCourseSubmit}>
+        <Button
+          className="text-lg px-6"
+          onClick={handleCourseSubmit}
+          disabled={!validateFormData()}
+        >
           Submit
         </Button>
       </div>
