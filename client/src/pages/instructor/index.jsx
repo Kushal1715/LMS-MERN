@@ -3,12 +3,17 @@ import InstructorDashboard from "@/components/instructor-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/auth-context";
+import { InstructorContext } from "@/context/instructor-context";
+import { getAllCourseService } from "@/services";
 import { BarChart, Book, LogOut } from "lucide-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const InstructorDashboardPage = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
   const { resetCredentials } = useContext(AuthContext);
+  const { instructorCourseList, setInstructorCourseList } =
+    useContext(InstructorContext);
+
   const menuItems = [
     {
       icon: BarChart,
@@ -20,7 +25,7 @@ const InstructorDashboardPage = () => {
       icon: Book,
       label: "Courses",
       value: "courses",
-      component: <InstructorCourses />,
+      component: <InstructorCourses courseList={instructorCourseList} />,
     },
     {
       icon: LogOut,
@@ -34,6 +39,17 @@ const InstructorDashboardPage = () => {
     resetCredentials();
     sessionStorage.clear();
   };
+
+  const fetchInstructorCourseList = async () => {
+    const response = await getAllCourseService();
+    if (response?.success) {
+      setInstructorCourseList(response?.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchInstructorCourseList();
+  }, []);
   return (
     <div className="h-screen w-full bg-gray-200 flex">
       <aside className="h-full bg-gray-50 px-4 py-6 w-96 hidden xl:block shadow-lg">

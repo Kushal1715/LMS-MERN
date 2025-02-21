@@ -12,7 +12,8 @@ import { Delete, Edit } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const InstructorCourses = () => {
+const InstructorCourses = ({ courseList }) => {
+  console.log(courseList);
   const navigate = useNavigate();
   return (
     <Card>
@@ -34,21 +35,27 @@ const InstructorCourses = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">
-                  React Js full course 2025
-                </TableCell>
-                <TableCell>25</TableCell>
-                <TableCell>234234</TableCell>
-                <TableCell className="text-right">
-                  <Button variant="ghost">
-                    <Edit className="w-6 h-6" />
-                  </Button>
-                  <Button variant="ghost">
-                    <Delete className="w-6 h-6" />
-                  </Button>
-                </TableCell>
-              </TableRow>
+              {courseList && courseList.length > 0
+                ? courseList.map((course) => (
+                    <TableRow key={course?._id}>
+                      <TableCell className="font-medium">
+                        {course?.title}
+                      </TableCell>
+                      <TableCell>{course?.students.length}</TableCell>
+                      <TableCell>
+                        {course?.students.length * course?.pricing}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost">
+                          <Edit className="w-6 h-6" />
+                        </Button>
+                        <Button variant="ghost">
+                          <Delete className="w-6 h-6" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : null}
             </TableBody>
           </Table>
         </div>
