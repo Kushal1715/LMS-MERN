@@ -65,26 +65,33 @@ const updateCourseById = async (req, res) => {
     const { id } = req.params;
     const { updatedCourseData } = req.body;
 
-    const updateCourse = await Course.findByIdAndUpdate(id, updatedCourseData, {
-      new: true,
-    });
+    console.log(updatedCourseData);
 
-    if (!updateCourse) {
+    const updatedCourse = await Course.findByIdAndUpdate(
+      id,
+      updatedCourseData,
+      {
+        new: true,
+      }
+    );
+
+    if (!updatedCourse) {
       return res.status(404).json({
         success: false,
-        message: "course not found",
+        message: "Course not found",
       });
     }
 
     res.status(200).json({
       success: true,
-      message: "course updated successfully",
-      data: updateCourse,
+      message: "Course updated successfully",
+      data: updatedCourse,
     });
   } catch (e) {
-    return res.status(500).json({
+    console.error(e); // Log the error for debugging
+    res.status(500).json({
       success: false,
-      message: "some error occured",
+      message: "An error occurred while updating the course",
     });
   }
 };

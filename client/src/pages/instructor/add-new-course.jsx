@@ -11,7 +11,11 @@ import {
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { useToast } from "@/hooks/use-toast";
-import { addCourseService, getCourseDetailsService } from "@/services";
+import {
+  addCourseService,
+  getCourseDetailsService,
+  updateCourseService,
+} from "@/services";
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -74,17 +78,31 @@ const AddNewCourse = () => {
       isPublished: true,
     };
 
-    const response = await addCourseService(allFormData);
-    console.log(response);
-    if (response?.success) {
-      setCourseCurriculumFormData(courseCurriculumInitialFormData);
-      setCourseLandingFormData(courseLandingInitialFormData);
-      toast({
-        title: response?.message,
-      });
-      navigate(-1);
+    if (editCourseId) {
+      const response = await updateCourseService(editCourseId, allFormData);
+      if (response?.success) {
+        setCourseCurriculumFormData(courseCurriculumInitialFormData);
+        setCourseLandingFormData(courseLandingInitialFormData);
+        toast({
+          title: response?.message,
+        });
+        navigate(-1);
+        setEditCourseId(null);
+      }
+    } else {
+      const response = await addCourseService(allFormData);
+      if (response?.success) {
+        setCourseCurriculumFormData(courseCurriculumInitialFormData);
+        setCourseLandingFormData(courseLandingInitialFormData);
+        toast({
+          title: response?.message,
+        });
+        navigate(-1);
+      }
     }
   };
+
+  console.log(courseLandingFormData);
 
   const fetchCourseDetails = async () => {
     const response = await getCourseDetailsService(editCourseId);
@@ -112,7 +130,9 @@ const AddNewCourse = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="font-extrabold text-3xl">Create New Course</h1>
+        <h1 className="font-extrabold text-3xl">
+          {editCourseId ? "Edit" : "Create New"} Course
+        </h1>
         <Button
           className="text-lg px-6"
           onClick={handleCourseSubmit}
