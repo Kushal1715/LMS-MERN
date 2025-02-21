@@ -11,7 +11,7 @@ import {
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { useToast } from "@/hooks/use-toast";
-import { addCourseService } from "@/services";
+import { addCourseService, getCourseDetailsService } from "@/services";
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -86,9 +86,29 @@ const AddNewCourse = () => {
     }
   };
 
+  const fetchCourseDetails = async () => {
+    const response = await getCourseDetailsService(editCourseId);
+    console.log(response);
+    if (response?.success) {
+      const courseLandingData = Object.keys(
+        courseLandingInitialFormData
+      ).reduce((acc, key) => {
+        acc[key] = response?.data[key] || courseCurriculumInitialFormData[key];
+        return acc;
+      }, {});
+
+      setCourseLandingFormData(courseLandingData);
+      setCourseCurriculumFormData(response?.data?.curriculum);
+    }
+  };
+
   useEffect(() => {
     setEditCourseId(params.courseId);
   }, [params]);
+
+  useEffect(() => {
+    editCourseId && fetchCourseDetails();
+  }, [editCourseId]);
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
