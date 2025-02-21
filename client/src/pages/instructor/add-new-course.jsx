@@ -12,8 +12,8 @@ import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { useToast } from "@/hooks/use-toast";
 import { addCourseService } from "@/services";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AddNewCourse = () => {
   const {
@@ -21,10 +21,13 @@ const AddNewCourse = () => {
     courseCurriculumFormData,
     setCourseLandingFormData,
     setCourseCurriculumFormData,
+    editCourseId,
+    setEditCourseId,
   } = useContext(InstructorContext);
   const { auth } = useContext(AuthContext);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const params = useParams();
 
   function isEmpty(value) {
     if (Array.isArray(value)) {
@@ -83,6 +86,9 @@ const AddNewCourse = () => {
     }
   };
 
+  useEffect(() => {
+    setEditCourseId(params.courseId);
+  }, [params]);
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
