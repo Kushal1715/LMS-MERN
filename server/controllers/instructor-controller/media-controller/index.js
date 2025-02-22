@@ -67,4 +67,4 @@ const bulkUploadMedia = async (req, res) => {
   }
 };
 
-module.exports = { uploadMedia, deleteMedia };
+module.exports = { uploadMedia, deleteMedia, bulkUploadMedia };
