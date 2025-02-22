@@ -46,4 +46,25 @@ const deleteMedia = async (req, res) => {
   }
 };
 
+const bulkUploadMedia = async (req, res) => {
+  try {
+    const uploadPromises = req.files.map((fileItem) =>
+      uploadMediaToCloudinary(fileItem.path)
+    );
+
+    const results = await Promise.all(uploadPromises);
+
+    res.status(200).json({
+      success: true,
+      data: results,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "some error occured",
+    });
+  }
+};
+
 module.exports = { uploadMedia, deleteMedia };

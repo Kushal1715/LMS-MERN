@@ -2,6 +2,10 @@ import InstructorCourses from "@/components/instructor-view/courses";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import {
+  courseCurriculumInitialFormData,
+  courseLandingInitialFormData,
+} from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { getAllCourseService } from "@/services";
@@ -11,8 +15,16 @@ import React, { useContext, useEffect, useState } from "react";
 const InstructorDashboardPage = () => {
   const [currentTab, setCurrentTab] = useState("dashboard");
   const { resetCredentials } = useContext(AuthContext);
-  const { instructorCourseList, setInstructorCourseList } =
-    useContext(InstructorContext);
+  const {
+    setCourseLandingFormData,
+
+    setCourseCurriculumFormData,
+
+    instructorCourseList,
+    setInstructorCourseList,
+
+    setEditCourseId,
+  } = useContext(InstructorContext);
 
   const menuItems = [
     {
@@ -49,6 +61,12 @@ const InstructorDashboardPage = () => {
 
   useEffect(() => {
     fetchInstructorCourseList();
+  }, []);
+
+  useEffect(() => {
+    setCourseLandingFormData(courseLandingInitialFormData);
+    setCourseCurriculumFormData(courseCurriculumInitialFormData);
+    setEditCourseId(null);
   }, []);
   return (
     <div className="h-screen w-full bg-gray-200 flex">
