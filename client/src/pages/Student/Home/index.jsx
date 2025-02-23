@@ -1,9 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { courseCategories } from "@/config";
 import { AuthContext } from "@/context/auth-context";
-import React, { useContext } from "react";
+import { StudentContext } from "@/context/student-context";
+import { studentViewGetAllCourseService } from "@/services";
+import React, { useContext, useEffect } from "react";
 
 const StudentHomePage = () => {
+  const { studentCourseList, setStudentCourseList } =
+    useContext(StudentContext);
+
+  const fetchAllCourses = async () => {
+    const response = await studentViewGetAllCourseService();
+    if (response?.success) {
+      setStudentCourseList(response?.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllCourses();
+  }, []);
+
+  console.log(studentCourseList);
   return (
     <main className="">
       <div className="flex flex-col lg:flex-row lg:items-center gap-10 p-6">

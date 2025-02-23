@@ -73,3 +73,13 @@ export const bulkUploadMediaService = async (formData, onProgressCallback) => {
   });
   return data;
 };
+
+export const studentViewGetAllCourseService = async () => {
+  const { data } = await axiosInstance.get("/student/course/get");
+  return data;
+};
+
+export const studentViewGetCourseDetailsService = async (id) => {
+  const { data } = await axiosInstance.get(`/student/course/get-details/${id}`);
+  return data;
+};
