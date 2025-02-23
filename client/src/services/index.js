@@ -62,7 +62,7 @@ export const updateCourseService = async (id, formData) => {
   return data;
 };
 
-export const bulkUploadMedia = async (formData, onProgressCallback) => {
+export const bulkUploadMediaService = async (formData, onProgressCallback) => {
   const { data } = await axiosInstance.post("/media/bulk-upload", formData, {
     onUploadProgress: (progressEvent) => {
       const percentCompleted = Math.round(

@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import VideoPlayer from "@/components/video-player";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
-import { deleteMedia, uploadMedia } from "@/services";
+import { bulkUploadMediaService, deleteMedia, uploadMedia } from "@/services";
 import { Upload } from "lucide-react";
 import React, { useContext, useRef } from "react";
 
@@ -108,9 +108,59 @@ const CourseCurriculum = () => {
     }
   };
 
+  function areAllCourseCurriculumFormDataObjectsEmpty(arr) {
+    return arr.every((obj) => {
+      return Object.entries(obj).every(([key, value]) => {
+        if (typeof value === "boolean") {
+          return true;
+        }
+        return value === "";
+      });
+    });
+  }
+
   const handleBulkUpload = () => {
     bulkUploadRef.current?.click();
   };
+
+  async function handleBulkUploadChange(event) {
+    const selectedFiles = Array.from(event.target.files);
+    const bulkFormData = new FormData();
+
+    selectedFiles.forEach((fileItem) => bulkFormData.append("files", fileItem));
+
+    try {
+      setMediaUploadProgress(true);
+      const response = await bulkUploadMediaService(
+        bulkFormData,
+        setMediaUploadProgressPercentage
+      );
+
+      console.log(response, "bulk");
+      if (response?.success) {
+        let cpyCourseCurriculumFormdata =
+          areAllCourseCurriculumFormDataObjectsEmpty(courseCurriculumFormData)
+            ? []
+            : [...courseCurriculumFormData];
+
+        cpyCourseCurriculumFormdata = [
+          ...cpyCourseCurriculumFormdata,
+          ...response?.data.map((item, index) => ({
+            videoUrl: item?.url,
+            public_id: item?.public_id,
+            title: `Lecture ${
+              cpyCourseCurriculumFormdata.length + (index + 1)
+            }`,
+            freePreview: false,
+          })),
+        ];
+        setCourseCurriculumFormData(cpyCourseCurriculumFormdata);
+        setMediaUploadProgress(false);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <Card>
@@ -124,6 +174,7 @@ const CourseCurriculum = () => {
             multiple
             id="bulk-upload"
             ref={bulkUploadRef}
+            onChange={handleBulkUploadChange}
           />
           <Button as="label" htmlFor="bulk-upload" onClick={handleBulkUpload}>
             <Upload /> Bulk Upload
