@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { courseCategories } from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import React, { useContext } from "react";
 
@@ -20,9 +21,20 @@ const StudentHomePage = () => {
           </div>
         </section>
       </div>
-      <section className="bg-gray-300 mt-12 p-6">
+      <section className="bg-gray-300 mt-12 px-6 pt-12 pb-20">
         <h1 className="font-bold text-3xl">Course Categories</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+          {courseCategories && courseCategories.length > 0
+            ? courseCategories.map((category) => (
+                <div
+                  key={category.id}
+                  className="py-2 px-4 bg-white font-semibold rounded-lg cursor-pointer"
+                >
+                  {category.label}
+                </div>
+              ))
+            : null}
+        </div>
       </section>
     </main>
   );
