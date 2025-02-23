@@ -6,12 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./context/auth-context";
 import InstructorProvider from "./context/instructor-context";
 import { Toaster } from "./components/ui/toaster";
+import StudentProvider from "./context/student-context";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
       <InstructorProvider>
-        <App />
+        <StudentProvider>
+          <App />
+        </StudentProvider>
         <Toaster />
       </InstructorProvider>
     </AuthProvider>
