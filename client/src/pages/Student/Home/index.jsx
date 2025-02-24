@@ -53,6 +53,23 @@ const StudentHomePage = () => {
             : null}
         </div>
       </section>
+      <section className="px-6 pt-12 pb-20">
+        <h1 className="font-bold text-3xl">Featured Courses</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
+          {studentCourseList && studentCourseList.length > 0
+            ? studentCourseList.map((course) => (
+                <div key={course?._id} className="shadow-md bg-gray-200">
+                  <img src={course?.image} className="rounded-t-lg" />
+                  <div className="p-4 space-y-2">
+                    <h1 className="font-bold text-xl">{course?.title}</h1>
+                    <p>{course?.instructorName}</p>
+                    <p className="font-bold text-lg">Rs. {course?.pricing}</p>
+                  </div>
+                </div>
+              ))
+            : null}
+        </div>
+      </section>
     </main>
   );
 };
