@@ -1,11 +1,12 @@
 import { GraduationCap, TvMinimalPlay } from "lucide-react";
 import React, { useContext } from "react";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "@/context/auth-context";
 
 const StudentHeader = () => {
   const { resetCredentials } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     resetCredentials();
@@ -23,7 +24,11 @@ const StudentHeader = () => {
             <span>LMS LEARN</span>
           </Link>
           <div className="">
-            <Button variant="ghost" className="text-lg bg-gray-400">
+            <Button
+              variant="ghost"
+              className="text-lg bg-gray-400"
+              onClick={() => navigate("/course")}
+            >
               Explore Courses
             </Button>
           </div>
