@@ -13,11 +13,12 @@ import { filterOptions, sortOptions } from "@/config";
 import { StudentContext } from "@/context/student-context";
 import { studentViewGetAllCourseService } from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const StudentViewCoursePage = () => {
   const { studentCourseList, setStudentCourseList } =
     useContext(StudentContext);
+  const [sort, setSort] = useState("price-lowtohigh");
 
   const fetchAllCourses = async () => {
     const response = await studentViewGetAllCourseService();
@@ -66,8 +67,8 @@ const StudentViewCoursePage = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[180px]">
                 <DropdownMenuRadioGroup
-                //   value={sort}
-                //   onValueChange={(value) => setSort(value)}
+                  value={sort}
+                  onValueChange={(value) => setSort(value)}
                 >
                   {sortOptions.map((sortItem) => (
                     <DropdownMenuRadioItem
