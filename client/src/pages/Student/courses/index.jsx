@@ -19,6 +19,7 @@ const StudentViewCoursePage = () => {
   const { studentCourseList, setStudentCourseList } =
     useContext(StudentContext);
   const [sort, setSort] = useState("price-lowtohigh");
+  const [filters, setFilters] = useState({});
 
   const fetchAllCourses = async () => {
     const response = await studentViewGetAllCourseService();
@@ -26,6 +27,8 @@ const StudentViewCoursePage = () => {
       setStudentCourseList(response?.data);
     }
   };
+
+  const handleFilterOnChange = (getSection, getCurrentOption) => {};
 
   useEffect(() => {
     fetchAllCourses();
@@ -47,7 +50,12 @@ const StudentViewCoursePage = () => {
                       className="flex items-center gap-3"
                       key={option.label}
                     >
-                      <Checkbox />
+                      <Checkbox
+                        checked={false}
+                        onCheckedChange={() =>
+                          handleFilterOnChange(filterItem, option)
+                        }
+                      />
                       {option.label}
                     </Label>
                   ))}
