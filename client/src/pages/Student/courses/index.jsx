@@ -65,18 +65,26 @@ const StudentViewCoursePage = () => {
     setFilters(copyFilters);
     sessionStorage.setItem("filters", JSON.stringify(copyFilters));
   };
-
-  console.log(filters);
-
   useEffect(() => {
     const buildQueryStringForFilters = createSearchParamsHelper(filters);
     setSearchParams(new URLSearchParams(buildQueryStringForFilters));
   }, [filters]);
 
   useEffect(() => {
+    setSort("price-lowtohigh");
+    setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+  }, []);
+
+  useEffect(() => {
     if (filters !== null && sort !== null) fetchAllCourses(filters, sort);
   }, [filters, sort]);
 
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("filters");
+    };
+  }, []);
+  console.log(filters, sort, "filters and sort");
   return (
     <div className="mx-auto p-6">
       <h1 className="font-extrabold text-3xl mb-4">All Courses</h1>
