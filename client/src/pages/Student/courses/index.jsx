@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { filterOptions, sortOptions } from "@/config";
 import { StudentContext } from "@/context/student-context";
 import { studentViewGetAllCourseService } from "@/services";
@@ -31,7 +32,7 @@ function createSearchParamsHelper(filterParams) {
 }
 
 const StudentViewCoursePage = () => {
-  const { studentCourseList, setStudentCourseList } =
+  const { studentCourseList, setStudentCourseList, loading, setLoading } =
     useContext(StudentContext);
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
@@ -42,6 +43,7 @@ const StudentViewCoursePage = () => {
     const response = await studentViewGetAllCourseService(query);
     if (response?.success) {
       setStudentCourseList(response?.data);
+      setLoading(false);
     }
   };
 
@@ -172,8 +174,10 @@ const StudentViewCoursePage = () => {
                   </CardContent>
                 </Card>
               ))
+            ) : loading ? (
+              <Skeleton />
             ) : (
-              <h1>No Course Found</h1>
+              <h1>No courses found</h1>
             )}
           </div>
         </main>
