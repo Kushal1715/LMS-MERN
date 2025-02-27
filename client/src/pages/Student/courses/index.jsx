@@ -37,8 +37,9 @@ const StudentViewCoursePage = () => {
   const [filters, setFilters] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const fetchAllCourses = async () => {
-    const response = await studentViewGetAllCourseService();
+  const fetchAllCourses = async (filters, sort) => {
+    const query = new URLSearchParams({ ...filters, sortBy: sort });
+    const response = await studentViewGetAllCourseService(query);
     if (response?.success) {
       setStudentCourseList(response?.data);
     }
@@ -73,8 +74,8 @@ const StudentViewCoursePage = () => {
   }, [filters]);
 
   useEffect(() => {
-    fetchAllCourses();
-  }, []);
+    if (filters !== null && sort !== null) fetchAllCourses(filters, sort);
+  }, [filters, sort]);
 
   return (
     <div className="mx-auto p-6">
