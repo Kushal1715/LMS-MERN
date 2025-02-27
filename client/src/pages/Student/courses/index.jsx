@@ -14,12 +14,28 @@ import { StudentContext } from "@/context/student-context";
 import { studentViewGetAllCourseService } from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+function createSearchParamsHelper(filterParams) {
+  const queryParams = [];
+
+  for (const [key, value] of Object.entries(filterParams)) {
+    if (Array.isArray(value) && value.length > 0) {
+      const paramValue = value.join(",");
+
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+    }
+  }
+
+  return queryParams.join("&");
+}
 
 const StudentViewCoursePage = () => {
   const { studentCourseList, setStudentCourseList } =
     useContext(StudentContext);
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchAllCourses = async () => {
     const response = await studentViewGetAllCourseService();
@@ -50,6 +66,11 @@ const StudentViewCoursePage = () => {
   };
 
   console.log(filters);
+
+  useEffect(() => {
+    const buildQueryStringForFilters = createSearchParamsHelper(filters);
+    setSearchParams(new URLSearchParams(buildQueryStringForFilters));
+  }, [filters]);
 
   useEffect(() => {
     fetchAllCourses();
