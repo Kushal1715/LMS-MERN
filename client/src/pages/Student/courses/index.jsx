@@ -28,13 +28,33 @@ const StudentViewCoursePage = () => {
     }
   };
 
-  const handleFilterOnChange = (getSection, getCurrentOption) => {};
+  const handleFilterOnChange = (getSection, getCurrentOption) => {
+    let copyFilters = { ...filters };
+    const indexOfCurrentSection = Object.keys(copyFilters).indexOf(getSection);
+    console.log(indexOfCurrentSection, "indez");
+
+    if (indexOfCurrentSection === -1) {
+      copyFilters = { ...copyFilters, [getSection]: [getCurrentOption.id] };
+    } else {
+      const indexOfCurrentOption = copyFilters[getSection].indexOf(
+        getCurrentOption.id
+      );
+      if (indexOfCurrentOption === -1) {
+        copyFilters[getSection].push(getCurrentOption.id);
+      } else {
+        copyFilters[getSection].splice(indexOfCurrentOption, 1);
+      }
+    }
+    setFilters(copyFilters);
+    sessionStorage.setItem("filters", JSON.stringify(copyFilters));
+  };
+
+  console.log(filters);
 
   useEffect(() => {
     fetchAllCourses();
   }, []);
 
-  console.log(studentCourseList);
   return (
     <div className="mx-auto p-6">
       <h1 className="font-extrabold text-3xl mb-4">All Courses</h1>
@@ -51,7 +71,12 @@ const StudentViewCoursePage = () => {
                       key={option.label}
                     >
                       <Checkbox
-                        checked={false}
+                        checked={
+                          filters &&
+                          Object.keys(filters).length > 0 &&
+                          filters[filterItem] &&
+                          filters[filterItem].indexOf(option.id) > -1
+                        }
                         onCheckedChange={() =>
                           handleFilterOnChange(filterItem, option)
                         }
