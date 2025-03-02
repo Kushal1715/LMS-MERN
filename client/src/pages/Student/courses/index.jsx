@@ -146,7 +146,9 @@ const StudentViewCoursePage = () => {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-            <span className="font-bold">10 Results</span>
+            <span className="font-bold">
+              {studentCourseList.length} results
+            </span>
           </div>
           <div className="grid gap-4">
             {studentCourseList && studentCourseList.length > 0 ? (
