@@ -15,7 +15,7 @@ import { StudentContext } from "@/context/student-context";
 import { studentViewGetAllCourseService } from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -37,6 +37,7 @@ const StudentViewCoursePage = () => {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const fetchAllCourses = async (filters, sort) => {
     const query = new URLSearchParams({ ...filters, sortBy: sort });
@@ -153,7 +154,13 @@ const StudentViewCoursePage = () => {
           <div className="grid gap-4">
             {studentCourseList && studentCourseList.length > 0 ? (
               studentCourseList.map((course) => (
-                <Card key={course?._id} className="pt-4">
+                <Card
+                  key={course?._id}
+                  className="pt-4 cursor-pointer"
+                  onClick={() =>
+                    navigate(`/courses/course-details/${course?._id}`)
+                  }
+                >
                   <CardContent className="flex gap-4">
                     <div className="w-48 h-32">
                       <img src={course?.image} className="w-full h-full" />
