@@ -12,7 +12,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
-import { studentViewGetCourseDetailsService } from "@/services";
+import {
+  studentViewCreateOrder,
+  studentViewGetCourseDetailsService,
+} from "@/services";
 import { CheckCircle, Globe, PlayCircle, Lock } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -44,6 +47,40 @@ const CourseDetailsPage = () => {
   function handleSetFreePreview(getCurrentVideoInfo) {
     setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
   }
+
+  const handlePayment = async () => {
+    const payloadData = {
+      userId: auth?.user?._id,
+      userName: auth?.user?.userName,
+      userEmail: auth?.user?.email,
+      orderStatus: "pending",
+      paymentMethod: "paypal",
+      paymentStatus: "initiated",
+      orderDate: new Date(),
+      paymentId: "",
+      payerId: "",
+      instructorId: courseDetails?.instructorId,
+      instructorName: courseDetails?.instructorName,
+      courseImage: courseDetails?.image,
+      courseTitle: courseDetails?.title,
+      courseId: courseDetails?._id,
+      coursePricing: courseDetails?.pricing,
+    };
+
+    const response = await studentViewCreateOrder(payloadData);
+    console.log(response);
+
+    if (response?.success) {
+      sessionStorage.setItem(
+        "currentOrderId",
+        JSON.stringify(response?.data?.orderId)
+      );
+      setApprovalUrl(response?.data?.approveUrl);
+    }
+  };
+
+  console.log(auth);
+  console.log(courseDetails);
 
   useEffect(() => {
     if (displayCurrentVideoFreePreview !== null) setShowFreePreviewDialog(true);
@@ -145,7 +182,9 @@ const CourseDetailsPage = () => {
                   ${courseDetails?.pricing}
                 </span>
               </div>
-              <Button className="w-full">Buy Now</Button>
+              <Button className="w-full" onClick={handlePayment}>
+                Buy Now
+              </Button>
             </CardContent>
           </Card>
         </aside>

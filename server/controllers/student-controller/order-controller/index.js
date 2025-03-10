@@ -5,6 +5,7 @@ const StudentCourses = require("../../../models/StudentCourses");
 
 const createOrder = async (req, res) => {
   try {
+    console.log(req.body);
     const {
       userId,
       userName,
@@ -47,7 +48,7 @@ const createOrder = async (req, res) => {
           },
           amount: {
             currency: "USD",
-            total: coursePricing.toFixed(2),
+            total: coursePricing,
           },
           description: courseTitle,
         },
