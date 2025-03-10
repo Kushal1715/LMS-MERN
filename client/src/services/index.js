@@ -83,3 +83,16 @@ export const studentViewGetCourseDetailsService = async (id) => {
   const { data } = await axiosInstance.get(`/student/course/get-details/${id}`);
   return data;
 };
+
+export const studentViewCreateOrder = async (formData) => {
+  const { data } = await axiosInstance.post("/student/order/create", formData);
+  return data;
+};
+
+export const studentViewFinalizeOrder = async (formData) => {
+  const { data } = await axiosInstance.post(
+    "/student/order/finalize",
+    formData
+  );
+  return data;
+};
