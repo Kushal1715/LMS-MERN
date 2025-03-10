@@ -1,4 +1,6 @@
+const paypal = require("../../../helpers/paypal");
 const Order = require("../../../models/Order");
+const Course = require("../../../models/Course");
 const StudentCourses = require("../../../models/StudentCourses");
 
 const createOrder = async (req, res) => {
@@ -10,7 +12,7 @@ const createOrder = async (req, res) => {
       orderStatus,
       paymentMethod,
       paymentStatus,
-      orderDate: Date,
+      orderDate,
       paymentId,
       payerId,
       instructorId,
@@ -54,9 +56,10 @@ const createOrder = async (req, res) => {
 
     paypal.payment.create(create_payment_json, async (error, paymentInfo) => {
       if (error) {
+        console.log(error);
         return res.status(500).json({
           success: false,
-          message: "error while creating paypal payament",
+          message: "Error while creating paypal payment!",
         });
       } else {
         const newlyCreatedCourseOrder = new Order({
@@ -66,7 +69,7 @@ const createOrder = async (req, res) => {
           orderStatus,
           paymentMethod,
           paymentStatus,
-          orderDate: Date,
+          orderDate,
           paymentId,
           payerId,
           instructorId,
@@ -92,10 +95,11 @@ const createOrder = async (req, res) => {
         });
       }
     });
-  } catch (e) {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
-      message: "some error occured",
+      message: "Some error occured!",
     });
   }
 };
@@ -104,11 +108,12 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
   try {
     const { paymentId, payerId, orderId } = req.body;
 
-    const order = await Order.findById(orderId);
+    let order = await Order.findById(orderId);
+
     if (!order) {
       return res.status(404).json({
         success: false,
-        message: "order not found",
+        message: "Order can not be found",
       });
     }
 
@@ -119,6 +124,7 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
 
     await order.save();
 
+    //update out student course model
     const studentCourses = await StudentCourses.findOne({
       userId: order.userId,
     });
@@ -135,7 +141,7 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
 
       await studentCourses.save();
     } else {
-      const newStudentCourse = new StudentCourses({
+      const newStudentCourses = new StudentCourses({
         userId: order.userId,
         courses: [
           {
@@ -149,7 +155,7 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
         ],
       });
 
-      await newStudentCourse.save();
+      await newStudentCourses.save();
     }
 
     //update the course schema students
@@ -169,10 +175,11 @@ const capturePaymentAndFinalizeOrder = async (req, res) => {
       message: "Order confirmed",
       data: order,
     });
-  } catch (e) {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
-      message: "some error occured",
+      message: "Some error occured!",
     });
   }
 };
