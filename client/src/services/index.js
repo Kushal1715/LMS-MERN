@@ -89,10 +89,15 @@ export const studentViewCreateOrder = async (formData) => {
   return data;
 };
 
-export const studentViewFinalizeOrder = async (formData) => {
-  const { data } = await axiosInstance.post(
-    "/student/order/finalize",
-    formData
-  );
+export const studentViewFinalizeOrder = async ({
+  paymentId,
+  payerId,
+  orderId,
+}) => {
+  const { data } = await axiosInstance.post("/student/order/finalize", {
+    paymentId,
+    payerId,
+    orderId,
+  });
   return data;
 };
