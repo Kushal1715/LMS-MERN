@@ -19,8 +19,15 @@ const StudentPaymentSuccess = () => {
         payerId,
         orderId,
       });
+
+      if (response?.success) {
+        sessionStorage.removeItem("currentOrderId");
+        window.location.href = "/student-paid-courses";
+      }
     };
-  }, []);
+
+    finalizePayment();
+  }, [paymentId, payerId]);
   return (
     <Card>
       <CardTitle>
