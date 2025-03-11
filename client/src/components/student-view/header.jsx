@@ -36,7 +36,7 @@ const StudentHeader = () => {
         <div className="flex items-center space-x-6">
           <div>
             <Link
-              to="/home"
+              to="/student-paid-courses"
               className="flex items-center gap-2 font-extrabold text-2xl"
             >
               <span>My Courses</span>
