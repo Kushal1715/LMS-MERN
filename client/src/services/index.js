@@ -101,3 +101,10 @@ export const studentViewFinalizeOrder = async ({
   });
   return data;
 };
+
+export const studentViewBoughtCoursesService = async (studentId) => {
+  const { data } = await axiosInstance.get(
+    `/student/bought-course/getCourses/${studentId}`
+  );
+  return data;
+};

@@ -7,6 +7,7 @@ const mediaRoutes = require("./routes/instructor-routes/media-routes");
 const courseRoutes = require("./routes/instructor-routes/course-routes");
 const studentCourseRoutes = require("./routes/student-routes/course-routes");
 const studentOrderRoutes = require("./routes/student-routes/order-routes");
+const studentBoughtCourseRoutes = require("./routes/student-routes/boughtcourse-routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,6 +35,7 @@ app.use("/media", mediaRoutes);
 app.use("/instructor/course", courseRoutes);
 app.use("/student/course", studentCourseRoutes);
 app.use("/student/order", studentOrderRoutes);
+app.use("/student/bought-course", studentBoughtCourseRoutes);
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
