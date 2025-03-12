@@ -87,7 +87,6 @@ const StudentViewCoursePage = () => {
         navigate(`/courses/course-details/${courseId}`);
       }
     }
-    console.log(response);
   };
   useEffect(() => {
     const buildQueryStringForFilters = createSearchParamsHelper(filters);
@@ -108,7 +107,6 @@ const StudentViewCoursePage = () => {
       sessionStorage.removeItem("filters");
     };
   }, []);
-  console.log(filters, sort, "filters and sort");
   return (
     <div className="mx-auto p-6">
       <h1 className="font-extrabold text-3xl mb-4">All Courses</h1>
