@@ -79,8 +79,10 @@ export const studentViewGetAllCourseService = async (query) => {
   return data;
 };
 
-export const studentViewGetCourseDetailsService = async (id) => {
-  const { data } = await axiosInstance.get(`/student/course/get-details/${id}`);
+export const studentViewGetCourseDetailsService = async (id, studentId) => {
+  const { data } = await axiosInstance.get(
+    `/student/course/get-details/${id}/${studentId}`
+  );
   return data;
 };
 

@@ -34,7 +34,10 @@ const CourseDetailsPage = () => {
   const location = useLocation();
 
   async function fetchStudentViewCourseDetails(courseId) {
-    const response = await studentViewGetCourseDetailsService(courseId);
+    const response = await studentViewGetCourseDetailsService(
+      courseId,
+      auth?.user?._id
+    );
 
     if (response?.success) {
       setCourseDetails(response?.data);
