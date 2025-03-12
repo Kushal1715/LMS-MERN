@@ -78,7 +78,7 @@ function App() {
         <Route path="/payment-return" element={<StudentPaymentSuccess />} />
         <Route path="/student-paid-courses" element={<StudentPaidCourses />} />
         <Route
-          path="/course-progress"
+          path="/course-progress/:courseId"
           element={<StudentViewCourseProgressPage />}
         />
         s

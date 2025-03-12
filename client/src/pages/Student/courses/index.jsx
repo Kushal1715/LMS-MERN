@@ -11,8 +11,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { filterOptions, sortOptions } from "@/config";
+import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
-import { studentViewGetAllCourseService } from "@/services";
+import {
+  checkCoursePurchaseInfoService,
+  studentViewGetAllCourseService,
+} from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -38,6 +42,7 @@ const StudentViewCoursePage = () => {
   const [filters, setFilters] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
 
   const fetchAllCourses = async (filters, sort) => {
     const query = new URLSearchParams({ ...filters, sortBy: sort });
@@ -67,6 +72,22 @@ const StudentViewCoursePage = () => {
     }
     setFilters(copyFilters);
     sessionStorage.setItem("filters", JSON.stringify(copyFilters));
+  };
+
+  const handleCourseDetails = async (courseId) => {
+    const response = await checkCoursePurchaseInfoService(
+      courseId,
+      auth?.user?._id
+    );
+
+    if (response?.success) {
+      if (response?.isCoursePurchased) {
+        navigate(`/course-progress/${courseId}`);
+      } else {
+        navigate(`/courses/course-details/${courseId}`);
+      }
+    }
+    console.log(response);
   };
   useEffect(() => {
     const buildQueryStringForFilters = createSearchParamsHelper(filters);
@@ -157,9 +178,7 @@ const StudentViewCoursePage = () => {
                 <Card
                   key={course?._id}
                   className="pt-4 cursor-pointer"
-                  onClick={() =>
-                    navigate(`/courses/course-details/${course?._id}`)
-                  }
+                  onClick={() => handleCourseDetails(course?._id)}
                 >
                   <CardContent className="flex gap-4">
                     <div className="w-48 h-32">

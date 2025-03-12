@@ -108,3 +108,10 @@ export const studentViewBoughtCoursesService = async (studentId) => {
   );
   return data;
 };
+
+export const checkCoursePurchaseInfoService = async (courseId, studentId) => {
+  const { data } = await axiosInstance.get(
+    `/student/course/check-purchase/${courseId}/${studentId}`
+  );
+  return data;
+};
