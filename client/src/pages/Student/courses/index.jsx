@@ -75,9 +75,10 @@ const StudentViewCoursePage = () => {
   };
 
   const handleCourseDetails = async (courseId) => {
+    console.log(auth);
     const response = await checkCoursePurchaseInfoService(
       courseId,
-      auth?.user?.id
+      auth?.user?._id
     );
 
     if (response?.success) {

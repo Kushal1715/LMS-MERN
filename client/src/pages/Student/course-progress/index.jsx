@@ -11,7 +11,7 @@ const StudentViewCourseProgressPage = () => {
       <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
         <div className="flex items-center space-x-4">
           <Button
-            onClick={() => navigate("/student-courses")}
+            onClick={() => navigate("/student-paid-courses")}
             className="text-black bg-white"
             variant="ghost"
             size="sm"
