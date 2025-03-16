@@ -115,3 +115,10 @@ export const checkCoursePurchaseInfoService = async (courseId, studentId) => {
   );
   return data;
 };
+
+export const studentCourseProgressService = async (userId, studentId) => {
+  const { data } = await axiosInstance.get(
+    `/student/course-progress/get/${userId}/${studentId}`
+  );
+  return data;
+};
