@@ -22,7 +22,7 @@ const getCurrentCourseProgress = async (req, res) => {
     const studentCourses = await StudentCourses.findOne({ userId });
     if (!studentCourses) {
       return res.status(404).json({
-        succcess: false,
+        success: false,
         message: "you dont have any bought courses",
       });
     }
@@ -44,7 +44,7 @@ const getCurrentCourseProgress = async (req, res) => {
 
     const courseProgress = await CourseProgress.findOne({ userId, courseId });
 
-    if (courseProgress.lecturesProgress.length === 0) {
+    if (!courseProgress || courseProgress?.lecturesProgress?.length === 0) {
       const courseDetails = await Course.findById(courseId);
 
       if (!courseDetails) {
@@ -54,7 +54,7 @@ const getCurrentCourseProgress = async (req, res) => {
         });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: "No progress found, you can start watching the course",
         data: {
@@ -74,7 +74,7 @@ const getCurrentCourseProgress = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         courseDetails,

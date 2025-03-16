@@ -116,9 +116,12 @@ export const checkCoursePurchaseInfoService = async (courseId, studentId) => {
   return data;
 };
 
-export const studentCourseProgressService = async (userId, studentId) => {
+export const studentgetCurrentCourseProgressService = async (
+  userId,
+  courseId
+) => {
   const { data } = await axiosInstance.get(
-    `/student/course-progress/get/${userId}/${studentId}`
+    `/student/course-progress/get/${userId}/${courseId}`
   );
   return data;
 };
