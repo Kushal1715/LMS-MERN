@@ -8,6 +8,7 @@ const courseRoutes = require("./routes/instructor-routes/course-routes");
 const studentCourseRoutes = require("./routes/student-routes/course-routes");
 const studentOrderRoutes = require("./routes/student-routes/order-routes");
 const studentBoughtCourseRoutes = require("./routes/student-routes/boughtcourse-routes");
+const studentCourseProgressRoutes = require("./routes/student-routes/course-progress-routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,7 @@ app.use("/instructor/course", courseRoutes);
 app.use("/student/course", studentCourseRoutes);
 app.use("/student/order", studentOrderRoutes);
 app.use("/student/bought-course", studentBoughtCourseRoutes);
+app.use("/student/course-progress", studentCourseProgressRoutes);
 
 app.use((err, req, res, next) => {
   console.log(err.stack);

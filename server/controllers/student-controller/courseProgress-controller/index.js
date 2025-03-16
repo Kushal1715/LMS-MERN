@@ -36,6 +36,9 @@ const getCurrentCourseProgress = async (req, res) => {
       return res.status(200).json({
         success: false,
         message: "you have not bought this course",
+        data: {
+          isPurchased: false,
+        },
       });
     }
 
