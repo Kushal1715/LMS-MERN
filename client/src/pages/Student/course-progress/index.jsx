@@ -3,7 +3,7 @@ import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import { studentgetCurrentCourseProgressService } from "@/services";
 import { ChevronLeft } from "lucide-react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const StudentViewCourseProgressPage = () => {
@@ -12,13 +12,23 @@ const StudentViewCourseProgressPage = () => {
   const { auth } = useContext(AuthContext);
   const { studentCurrentCourseProgress, setStudentCurrentCourseProgress } =
     useContext(StudentContext);
+  const [lockCourse, setLockCourse] = useState(false);
 
   const fetchCurrentCourseProgress = async () => {
     const response = await studentgetCurrentCourseProgressService(
       auth?.user?._id,
       courseId
     );
-    console.log(response);
+
+    if (response?.success) {
+      if (!response?.data?.isPurchased) {
+        setLockCourse(true);
+      }
+      setStudentCurrentCourseProgress({
+        courseDetails: response?.data?.courseDetails,
+        progress: response?.data?.progress,
+      });
+    }
   };
 
   useEffect(() => {
