@@ -12,6 +12,7 @@ import { StudentContext } from "@/context/student-context";
 import { studentgetCurrentCourseProgressService } from "@/services";
 import { ChevronLeft } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
+import ReactConfetti from "react-confetti";
 import { useNavigate, useParams } from "react-router-dom";
 
 const StudentViewCourseProgressPage = () => {
@@ -54,12 +55,20 @@ const StudentViewCourseProgressPage = () => {
   };
 
   useEffect(() => {
+    if (showConfetti) {
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 5000);
+    }
+  }, [showConfetti]);
+
+  useEffect(() => {
     fetchCurrentCourseProgress();
   }, [courseId]);
 
   return (
     <div className="flex flex-col h-screen bg-[#1c1d1f] text-white">
-      {/* {showConfetti && <Confetti />} */}
+      {showConfetti && <ReactConfetti />}
       <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
         <div className="flex items-center space-x-4">
           <Button
