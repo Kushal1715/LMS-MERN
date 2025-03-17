@@ -13,6 +13,10 @@ const StudentViewCourseProgressPage = () => {
   const { studentCurrentCourseProgress, setStudentCurrentCourseProgress } =
     useContext(StudentContext);
   const [lockCourse, setLockCourse] = useState(false);
+  const [currentLecture, setCurrentLecture] = useState(null);
+  const [showCourseCompleteDialog, setShowCourseCompleteDialog] =
+    useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const fetchCurrentCourseProgress = async () => {
     const response = await studentgetCurrentCourseProgressService(
@@ -23,11 +27,19 @@ const StudentViewCourseProgressPage = () => {
     if (response?.success) {
       if (!response?.data?.isPurchased) {
         setLockCourse(true);
+      } else {
+        setStudentCurrentCourseProgress({
+          courseDetails: response?.data?.courseDetails,
+          progress: response?.data?.progress,
+        });
       }
-      setStudentCurrentCourseProgress({
-        courseDetails: response?.data?.courseDetails,
-        progress: response?.data?.progress,
-      });
+
+      if (response?.data?.completed) {
+        setCurrentLecture(response?.data?.courseDetails?.curriculum[0]);
+        setShowCourseCompleteDialog(true);
+        setShowConfetti(true);
+        return;
+      }
     }
   };
 
