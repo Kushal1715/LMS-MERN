@@ -1,4 +1,12 @@
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import { studentgetCurrentCourseProgressService } from "@/services";
@@ -23,6 +31,8 @@ const StudentViewCourseProgressPage = () => {
       auth?.user?._id,
       courseId
     );
+
+    console.log(response);
 
     if (response?.success) {
       if (!response?.data?.isPurchased) {
@@ -66,6 +76,30 @@ const StudentViewCourseProgressPage = () => {
           </h1>
         </div>
       </div>
+      <Dialog open={lockCourse}>
+        <DialogContent className="sm:w-[425px]">
+          <DialogHeader>
+            <DialogTitle>You can't view this page</DialogTitle>
+            <DialogDescription>
+              Please purchase this course to get access
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={showCourseCompleteDialog}>
+        <DialogContent showOverlay={false} className="sm:w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Congratulations!</DialogTitle>
+            <DialogDescription className="flex flex-col gap-3">
+              <Label>You have completed the course</Label>
+              <div className="flex flex-row gap-3">
+                <Button>My Courses Page</Button>
+                <Button>Rewatch Course</Button>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
