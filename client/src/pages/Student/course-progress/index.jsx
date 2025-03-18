@@ -7,12 +7,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VideoPlayer from "@/components/video-player";
 import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
 import { studentgetCurrentCourseProgressService } from "@/services";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import ReactConfetti from "react-confetti";
 import { useNavigate, useParams } from "react-router-dom";
@@ -121,19 +122,19 @@ const StudentViewCourseProgressPage = () => {
             <TabsList className="grid bg-[#1c1d1f] w-full grid-cols-2 p-0 h-14">
               <TabsTrigger
                 value="content"
-                className=" text-black rounded-none h-full"
+                className=" text-white rounded-none h-full"
               >
                 Course Content
               </TabsTrigger>
               <TabsTrigger
                 value="overview"
-                className=" text-black rounded-none h-full"
+                className=" text-white rounded-none h-full"
               >
                 Overview
               </TabsTrigger>
             </TabsList>
             <TabsContent value="content">
-              {/* <ScrollArea className="h-full">
+              <ScrollArea className="h-full">
                 <div className="p-4 space-y-4">
                   {studentCurrentCourseProgress?.courseDetails?.curriculum.map(
                     (item) => (
@@ -153,17 +154,17 @@ const StudentViewCourseProgressPage = () => {
                     )
                   )}
                 </div>
-              </ScrollArea> */}
+              </ScrollArea>
             </TabsContent>
             <TabsContent value="overview" className="flex-1 overflow-hidden">
-              {/* <ScrollArea className="h-full">
+              <ScrollArea className="h-full">
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-4">About this course</h2>
                   <p className="text-gray-400">
                     {studentCurrentCourseProgress?.courseDetails?.description}
                   </p>
                 </div>
-              </ScrollArea> */}
+              </ScrollArea>
             </TabsContent>
           </Tabs>
         </div>
